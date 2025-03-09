@@ -104,6 +104,20 @@ def remove_print_job(job_id=None, printer_name=None):
 if __name__ == "__main__":
     printer_name = "Canon_LBP3010_LBP3018_LBP3050"
     
+    # Ask user for file name and page
+    file_name = input("Enter the file name to print: ")
+    page = input("Enter page number(s) to print (leave empty for all pages): ")
+    
+    # Check printer status before printing
+    printer_state = get_printer_state(printer_name)
+    
+    if printer_state and printer_state == "idle":
+        print(f"Printer {printer_name} is online and ready")
+        job_id = print_file(file_name, printer_name, page=page if page else None)
+        print(f"Print job submitted with ID: {job_id}")
+    else:
+        print(f"Printer {printer_name} is not ready or offline")
+    
     # print(get_printer_status(printer_name))
 
     # get_printer_queue(printer_name)
