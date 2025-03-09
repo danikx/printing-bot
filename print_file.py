@@ -12,7 +12,8 @@ def print_file(file_path, printer_name=None, page=None):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
     
-    command = ['lp']
+    command = ['lp', '-o', 'media=A4']
+    
     
     if printer_name:
         command.extend(['-d', printer_name])

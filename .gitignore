@@ -1,3 +1,4 @@
 cv.pdf
 venv/
 .env
+__pycache__/
