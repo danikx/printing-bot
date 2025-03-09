@@ -73,7 +73,7 @@ def get_printer_state(printer_name=None):
         if printer_name:
             print("Priter status : ", result.stdout) 
             first = result.stdout[0]
-            printer_state = first.strip().split('.').split('is')[1].strip()
+            printer_state = first.strip().split('.')[0].split('is')[1].strip()
             print(f"print state is '{printer_state}'")
 
             return printer_state
