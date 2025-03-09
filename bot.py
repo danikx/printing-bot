@@ -60,6 +60,7 @@ async def handle_torrent_file(message: types.Message):
     document = message.document
     
     print_pages = message.caption or "all"
+    print(f"printing pages: {print_pages}")
 
     if not document.file_name.endswith('.pdf'):
         await message.reply("Please send a .pdf file!")
