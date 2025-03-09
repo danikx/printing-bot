@@ -19,7 +19,7 @@ def print_file(file_path, printer_name=None, page=None):
         command.extend(['-d', printer_name])
     
     if page:
-        command.extend(['-p', str(page)])
+        command.extend(['-P', page])
     
     command.append(file_path)
     
@@ -52,6 +52,7 @@ def get_printer_queue(printer_name=None):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         print("Printer Queue:")
         print(result.stdout)
+
     except subprocess.CalledProcessError as e:
         print(f"Error checking printer queue: {e}")
 

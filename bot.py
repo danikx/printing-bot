@@ -13,7 +13,7 @@ import re
 import urllib.parse
 import logging
 import hashlib
-from print_file import print_file
+from print_file import print_file, get_printer_queue
 
 logging.basicConfig(
     level=logging.INFO,
@@ -73,6 +73,13 @@ async def handle_torrent_file(message: types.Message):
             job_id = print_file(tmp_file.name, printer_name=MINI_PRINTER, page=print_pages)
             logger.info(f"printing pages: {print_pages}, job id: {job_id}")
             await message.reply(f"I've sent your file to the printer! Job ID: {job_id}")
+
+            # Wait for 5 seconds before checking the printing status
+            await asyncio.sleep(5)
+
+            await message.reply(f"Checking printing status for  Job ID: {job_id}")
+            queue = get_printer_queue(printer_name=MINI_PRINTER)
+
         except Exception as e:
             await message.reply(f"Error: {str(e)}")
 
