@@ -72,7 +72,8 @@ def get_printer_state(printer_name=None):
 
         if printer_name:
             print("Priter status : ", result.stdout) 
-            printer_state = result.stdout.strip().split('.').split('is')[1].strip()
+            first = result.stdout[0]
+            printer_state = first.strip().split('.').split('is')[1].strip()
             print(f"print state is '{printer_state}'")
 
             return printer_state
@@ -110,7 +111,7 @@ if __name__ == "__main__":
     
     # Check printer status before printing
     printer_state = get_printer_state(printer_name)
-    
+
     if printer_state and printer_state == "idle":
         print(f"Printer {printer_name} is online and ready")
         job_id = print_file(file_name, printer_name, page=page if page else None)
