@@ -58,9 +58,8 @@ async def handle_torrent_file(message: types.Message):
         return
 
     document = message.document
-    
     print_pages = message.caption or "all"
-    print(f"printing pages: {print_pages}")
+    logger.info(f"printing pages: {print_pages}")
 
     if not document.file_name.endswith('.pdf'):
         await message.reply("Please send a .pdf file!")
@@ -72,6 +71,7 @@ async def handle_torrent_file(message: types.Message):
         
         try: 
             job_id = print_file(tmp_file.name, printer_name=MINI_PRINTER, page=print_pages)
+            logger.info(f"printing pages: {print_pages}, job id: {job_id}")
             await message.reply(f"I've sent your file to the printer! Job ID: {job_id}")
         except Exception as e:
             await message.reply(f"Error: {str(e)}")
