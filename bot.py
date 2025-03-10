@@ -118,9 +118,10 @@ async def process_pages_input(message: types.Message, state: FSMContext):
         return
     
     await state.update_data(pages=pages)
-    await ask_for_copies(message, state)
+    # Send new message instead of editing
+    await ask_for_copies(message, state, is_new_message=True)
 
-async def ask_for_copies(message: types.Message, state: FSMContext):
+async def ask_for_copies(message: types.Message, state: FSMContext, is_new_message=False):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="1", callback_data=PrintingCallback(action="copies", value="1").pack()),
@@ -132,7 +133,12 @@ async def ask_for_copies(message: types.Message, state: FSMContext):
         ]
     ])
     
-    await message.edit_text("How many copies do you need?", reply_markup=keyboard)
+    if is_new_message:
+        # Send new message instead of editing
+        await message.reply("How many copies do you need?", reply_markup=keyboard)
+    else:
+        # Edit message for callback queries
+        await message.edit_text("How many copies do you need?", reply_markup=keyboard)
     await state.set_state(PrintingStates.waiting_for_copies)
 
 @dp.callback_query(PrintingCallback.filter(F.action == "copies"))
@@ -150,13 +156,14 @@ async def process_copies_input(message: types.Message, state: FSMContext):
         copies = int(message.text)
         if 1 <= copies <= 99:
             await state.update_data(copies=copies)
-            await show_confirmation(message, state)
+            # Send new message instead of editing
+            await show_confirmation(message, state, is_new_message=True)
         else:
             await message.reply("Please enter a number between 1 and 99")
     except ValueError:
         await message.reply("Please enter a valid number")
 
-async def show_confirmation(message: types.Message, state: FSMContext):
+async def show_confirmation(message: types.Message, state: FSMContext, is_new_message=False):
     data = await state.get_data()
     
     confirmation_text = (
@@ -173,7 +180,12 @@ async def show_confirmation(message: types.Message, state: FSMContext):
         ]
     ])
     
-    await message.edit_text(confirmation_text, reply_markup=keyboard)
+    if is_new_message:
+        # Send new message instead of editing
+        await message.reply(confirmation_text, reply_markup=keyboard)
+    else:
+        # Edit message for callback queries
+        await message.edit_text(confirmation_text, reply_markup=keyboard)
     await state.set_state(PrintingStates.confirming)
 
 @dp.callback_query(PrintingCallback.filter(F.action == "confirm"))
