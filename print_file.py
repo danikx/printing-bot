@@ -1,13 +1,14 @@
 import os
 import subprocess
 
-def print_file(file_path, printer_name=None, pages=None):
+def print_file(file_path, printer_name=None, pages=None, copies=None):
     """
     Print a file using lp command
     Args:
         file_path: Path to the file to print
         printer_name: Name of the printer (optional)
-        page: Page number to print (optional)
+        pages: Page range to print (optional)
+        copies: Number of copies to print (optional)
     """
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
@@ -18,8 +19,11 @@ def print_file(file_path, printer_name=None, pages=None):
     if printer_name:
         command.extend(['-d', printer_name])
     
-    if page:
+    if pages:
         command.extend(['-P', pages])
+    
+    if copies:
+        command.extend(['-n', str(copies)])
     
     command.append(file_path)
     
