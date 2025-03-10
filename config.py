@@ -9,4 +9,4 @@ MINI_PRINTER = os.getenv('MINI_PRINTER', 'Canon_LBP3010_LBP3018_LBP3050')
 USERS = os.getenv('USER_SPECIFIC_ID=145091384', '')
 
 def auth_user():
-    return USERS.split(',')
+    return [int(user) for user in USERS.split(',') if user]
