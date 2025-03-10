@@ -37,6 +37,24 @@ def print_file(file_path, printer_name=None, page=None):
         print(f"Error printing file: {e}")
         return None
 
+def get_printing_state(printer_name=None):
+    """
+    lpstat -W not-completed  -l -R 
+    """
+    
+    command = ['lpstat', '-W', 'not-completed', '-l', '-R']
+
+    if printer_name:
+        command.extend(['-P', printer_name])
+
+    try:
+        pass
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        
+    except subprocess.CalledProcessError as e:
+        print(f"Error checking printer state: {e}")
+
+
 def get_printer_queue(printer_name=None):
     """
     Check printer queue using lpstat command
