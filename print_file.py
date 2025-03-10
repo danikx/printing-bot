@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def print_file(file_path, printer_name=None, page=None):
+def print_file(file_path, printer_name=None, pages=None):
     """
     Print a file using lp command
     Args:
@@ -19,7 +19,7 @@ def print_file(file_path, printer_name=None, page=None):
         command.extend(['-d', printer_name])
     
     if page:
-        command.extend(['-P', page])
+        command.extend(['-P', pages])
     
     command.append(file_path)
     
